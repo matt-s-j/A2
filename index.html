@@ -1,0 +1,442 @@
+<html>
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<link rel="shortcut icon" href="images/icon.ico">
+<style type="text/css">
+	body {
+		background-color: #f5f9ff;
+	}
+
+	/* Hide both math displays initially, will display based on JS detection */
+  .mathjax-mobile, .mathml-non-mobile { display: none; }
+
+  /* Show the MathML content by default on non-mobile devices */
+  .show-mathml .mathml-non-mobile { display: block; }
+  .show-mathjax .mathjax-mobile { display: block; }
+
+	.content-margin-container {
+		display: flex;
+		width: 100%; /* Ensure the container is full width */
+		justify-content: left; /* Horizontally centers the children in the container */
+		align-items: center;  /* Vertically centers the children in the container */
+	}
+	.main-content-block {
+		width: 70%; /* Change this percentage as needed */
+    max-width: 1100px; /* Optional: Maximum width */
+		background-color: #fff;
+		border-left: 1px solid #DDD;
+		border-right: 1px solid #DDD;
+		padding: 8px 8px 8px 8px;
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+	}
+	.margin-left-block {
+			font-size: 14px;
+			width: 15%; /* Change this percentage as needed */
+			max-width: 130px; /* Optional: Maximum width */
+			position: relative;
+			margin-left: 10px;
+			text-align: left;
+			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+			padding: 5px;
+	}
+	.margin-right-block {
+			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;#"Avenir";
+			font-size: 16px;
+			width: 25%; /* Change this percentage as needed */
+			max-width: 256px; /* Optional: Maximum width */
+			position: relative;
+			text-align: left;
+			padding: 10px;  /* Optional: Adds padding inside the caption */
+	}
+
+	img {
+			max-width: 100%; /* Make sure it fits inside the container */
+			height: auto;
+			display: block;
+			margin: auto;
+	}
+	.my-video {
+			max-width: 100%; /* Make sure it fits inside the container */
+			height: auto;
+			display: block;
+			margin: auto;
+	}
+	/* Hide both video displays initially, will display based on JS detection */
+  .vid-mobile, .vid-non-mobile { display: none; }
+
+  /* Show the video content by default on non-mobile devices */
+  .show-vid-mobile .vid-mobile { display: block; }
+  .show-vid-non-mobile .vid-non-mobile { display: block; }
+
+	a:link,a:visited
+	{
+		color: #0e7862; /*#1367a7;*/
+		text-decoration: none;
+	}
+	a:hover {
+		color: #24b597; /*#208799;*/
+	}
+
+	h1 {
+		font-size: 18px;
+		margin-top: 4px;
+		margin-bottom: 10px;
+	}
+
+	table.header {
+    font-weight: 300;
+    font-size: 17px;
+    flex-grow: 1;
+		width: 70%;
+    max-width: calc(100% - 290px); /* Adjust according to the width of .paper-code-tab */
+	}
+	table td, table td * {
+	    vertical-align: middle;
+	    position: relative;
+	}
+	table.paper-code-tab {
+	    flex-shrink: 0;
+	    margin-left: 8px;
+	    margin-top: 8px;
+	    padding: 0px 0px 0px 8px;
+	    width: 290px;
+	    height: 150px;
+	}
+
+	.layered-paper { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+		        0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
+		        5px 5px 0 0px #fff, /* The second layer */
+		        5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
+		        10px 10px 0 0px #fff, /* The third layer */
+		        10px 10px 1px 1px rgba(0,0,0,0.35); /* The third layer shadow */
+		margin-top: 5px;
+		margin-left: 10px;
+		margin-right: 30px;
+		margin-bottom: 5px;
+	}
+
+	hr {
+    height: 1px; /* Sets the height of the line to 1 pixel */
+    border: none; /* Removes the default border */
+    background-color: #DDD; /* Sets the line color to black */
+  }
+
+	div.hypothesis {
+		width: 80%;
+		background-color: #EEE;
+		border: 1px solid black;
+		border-radius: 10px;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		font-family: Courier;
+		font-size: 18px;
+		text-align: center;
+		margin: auto;
+		padding: 16px 16px 16px 16px;
+	}
+
+	div.citation {
+    font-size: 0.8em;
+    background-color:#fff;
+    padding: 10px;
+		height: 200px;
+  }
+
+	.fade-in-inline {
+		position: absolute;
+		text-align: center;
+		margin: auto;
+		-webkit-mask-image: linear-gradient(to right,
+																			transparent 0%,
+																			transparent 40%,
+																			black 50%,
+																			black 90%,
+																			transparent 100%);
+		mask-image: linear-gradient(to right,
+																transparent 0%,
+																transparent 40%,
+																black 50%,
+																black 90%,
+																transparent 100%);
+		-webkit-mask-size: 8000% 100%;
+		mask-size: 8000% 100%;
+		animation-name: sweepMask;
+		animation-duration: 4s;
+		animation-iteration-count: infinite;
+		animation-timing-function: linear;
+		animation-delay: -1s;
+	}
+
+	.fade-in2-inline {
+			animation-delay: 1s;
+	}
+
+	.inline-div {
+			position: relative;
+	    display: inline-block; /* Makes both the div and paragraph inline-block elements */
+	    vertical-align: top; /* Aligns them at the top, you can adjust this to middle, bottom, etc., based on your needs */
+	    width: 50px; /* Optional: Adds space between the div and the paragraph */
+	}
+
+</style>
+
+	  <title>6.C85 Data Visualization and Society: Assignment 2, Exploratory Data Analysis</title>
+      <meta property="og:title" content="6.C85 Data Visualization and Society: Assignment 2, Exploratory Data Analysis" />
+			<meta charset="UTF-8">
+  </head>
+
+  <body>
+
+		<div class="content-margin-container">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<table class="header" align=left>
+								<tr>
+									<td colspan=4>
+										<span style="font-size: 32px; font-family: 'Courier New', Courier, monospace; /* Adds fallbacks */">Exploring Corporate Housing Ownership in Boston</span>
+									</td>
+								</tr>
+								<tr>
+										<td align=left>
+												<span style="font-size:17px">Matthew Johnson</span>
+										</td>
+								<tr>
+									<td colspan=4 align=left><span style="font-size:18px">6.C85 Assignment #2, MIT</span></td>
+								</tr>
+						</table>
+					</div>
+					<div class="margin-right-block">
+					</div>
+		</div>
+
+		<div class="content-margin-container" id="intro">
+				<div class="margin-left-block">
+          <!-- table of contents here -->
+          <div style="position:fixed; max-width:inherit; top:max(20%,120px)">
+              <span style="font-size:16px">Table of Contents:</span><br><br>
+              <a href="#intro">Introduction</a><br><br>
+			  <a href="#data">Data</a><br><br>
+              <a href="#quesitons_and_analysis">Questions and Analysis</a><br><br>
+              <a href="#summary">Summary</a><br><br>
+          </div>
+				</div>
+		    <div class="main-content-block">
+		    </div>
+		    <div class="margin-right-block">
+		    </div>
+		</div>
+
+    <div class="content-margin-container" id="intro">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Introduction</h1>
+						This exploratory data analysis will focus on data surrounding housing data in the Boston metropolitan area and how the amount of Corporate ownership in Boston has changed over time across Boston’s different neighborhoods. 
+		    </div>
+		    <div class="margin-right-block">
+		    </div>
+		</div>
+
+		<div class="content-margin-container" id="data">
+			<div class="margin-left-block">
+			</div>
+		<div class="main-content-block">
+					<h1>Data</h1>
+					The data itself is drawn from three datasets from two sources: Census data (The U.S. Census Bureau), Property Assessment data (City of Boston), and Neighborhood Boundaries (City of Boston). Because of the time horizon the data was collected over there has been only one census and thus demographic data does not shift over the course of the dataset. Corporate ownership is calculated each year by searching for terms like “LLC”, “LLP”, “Corp”, “Trust”, etc. within ownership fields of public data. This method is not exact as it will not capture all corporate properties however it can serve as an effective lower bound approximation for corporate ownership within each neighborhood. The dataset itself contains 40 columns of data fields and 441 rows of neighborhood data.
+		</div>
+		<div class="margin-right-block">
+			The census data did not change over the time period studied however it is still informative to understand the demographic makeup of the neighborhoods in Boston. The property assessment data is the most important dataset as it contains the ownership information for each property in Boston. The neighborhood boundaries data is used to map the neighborhoods in Boston.
+		</div>
+	</div>		
+
+		<div class="content-margin-container" id="quesitons_and_analysis">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+					<h1>Questions and Analysis</h1>
+					<h2>Question 1: How has corporate ownership changed over time in Boston?</h2>
+					This question is mainly influenced by the readings done in past weeks that noted an uptick in corporate ownership of housing in metro areas across the United States.
+		    </div>
+		    <div class="margin-right-block" style="transform: translate(0%, -100%);"> <!-- you can move the margin notes up and down with translate -->
+		    </div>
+		</div>
+
+		<div class="content-margin-container">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+            <h1>Macro level changes to Corporate owenship over time</h1>
+            <img src="./images/Corporate ownership macro.png" alt="">
+						
+		    </div>
+		    <div class="margin-right-block">
+				First we will examine the macro trend across all neighborhoods with the Boston metro. As shown above, this data reinforces the news articles that there is a trend of increasing corporate ownership across the entire Boston Metro Area. This trend appears to be accelerating particularly from 2016 onwards with no apparent disruption from COVID. 
+		    </div>
+		</div>
+
+		<div class="content-margin-container">
+			<div class="margin-left-block">
+			</div>
+		<div class="main-content-block">
+		<h1>Neighborhood level changes Average (2004-2024)</h1>
+		<img src="./images/Av Corp Own by Neigh.png" alt="">
+					
+		</div>
+		<div class="margin-right-block">
+			Next when we break the data across neighborhoods it is clear that some neighborhoods (averaged across the timeframe) are far more corporately owned than others. In particular, Fenway, South Boston Waterfront, and the Downtown neighborhoods are particularly corporately owned while Jamacia Plain, Hyde Park, and West Roxbury remain individually owned. 
+		</div>
+		</div>		
+
+		<div class="content-margin-container">
+			<div class="margin-left-block">
+			</div>
+		<div class="main-content-block">
+		<h1>Neighborhood level changes over time (2004-2024)</h1>
+		<img src="./images/Corp own over time by neighborhood.png" alt="">
+		<img src="./images/Corporate ownership by neighborhood.png" alt="">
+					
+		</div>
+		<div class="margin-right-block">
+			This apparent disparity shifts however, when the time domain is added back into the analysis. From this view it is clear that while the absolute levels of corporate ownership vary quite significantly across neighborhoods, the trend of increasing corporate ownership is universal.
+			The top figue shows the change in corporate ownership over time for each neighborhood. The bottom shows the same information but in a single chart for easier comparison.
+		
+		</div>
+		</div>
+
+		<div class="content-margin-container">
+			<div class="margin-left-block">
+			</div>
+		<div class="main-content-block">
+		<h2>Question #2: How has the rate of Owner Occupancy changed over time in Boston.</h2>
+		This question is influenced by my life experience and those of many of my friends and relatives.
+		It seems increangly common that landlords do not live in the same city as their properties. 
+		While owner occupancy is not a perfect proxy for this, it is a good starting point.
+		<h1>Boston Metro owner occupancy rate changes over time (2004-2024)</h1>
+		<img src="./images/own occ over time.png" alt="">
+		</div>
+		<div class="margin-right-block">
+			The trend of increasing corporate ownership is complemented by a decreasing trend in owner occupancy rates across the whole metro area. 
+			While the trend is not as pronounced as the increase in corporate ownership, it is still clear that the rate of owner occupancy is decreasing over time.
+			This would seem to indicate that owner operator landlords are being replaced by corporate landlords across the metro area.
+		</div>
+		</div>
+
+		<div class="content-margin-container">
+			<div class="margin-left-block">
+			</div>
+		<div class="main-content-block">
+		<h1>Owner occupancy rates by neighborhood</h1>
+		<img src="./images/owner occ by neigh.png" alt="">					
+		</div>
+		<div class="margin-right-block">
+			When viewed at a neighborhood level this almost exactly opposes the corporate ownership rate. That is to say that the neighborhoods with the most owner occupancy tend to have the least corporate ownership.
+			There are some exceptions to this rule, such as the South Boston Waterfront neighborhood which has a high owner occupancy rate and a high corporate ownership rate.
+		</div>
+		</div>
+
+		<div class="content-margin-container">
+			<div class="margin-left-block">
+			</div>
+		<div class="main-content-block">
+		<h1>Owner occupancy rates by neighborhood over time (2004-2024)</h1>
+		<img src="./images/owner occ by neigh over time.png" alt="">					
+		</div>
+		<div class="margin-right-block">
+			An interesting trend emerges in the neighborhoods of West Roxbury and Hyde Park when the owners are viewed with an additional time axis. When viewed in this way it appears that something interesting is happening in these two neighborhoods, namely that corporate ownership is increasing yet owner occupancy is remaining fairly constant. This would imply that in these neighborhoods businesses owners are living in the spaces that they own adding an interesting wrinkle. 
+		</div>
+		</div>		
+
+		<div class="content-margin-container">
+			<div class="margin-left-block">
+			</div>
+		<div class="main-content-block">
+		<h2>Question #3: What demographic groups, if any, are disproportionately affected by the trend of increasing corporate ownership?</h2>
+		This question is influenced by the readings of Bostons historic redline districts and the legacy they left behind.
+		I am curious if the trend of increasing corporate ownership is disproportionately affecting any aprticular group due to the historic racial segregation of Boston neighborhoods.
+		</div>
+		<div class="margin-right-block">
+		</div>
+		</div>
+
+		<div class="content-margin-container">
+			<div class="margin-left-block">
+			</div>
+		<div class="main-content-block">
+		<h1>Average Corporate Ownership Rate (2004-2024) vs. Census Demographic groups</h1>
+		<img src="./images/av corp own vs census.png" alt="">					
+		</div>
+		<div class="margin-right-block">
+			Diving into exploring whether there is any apparent trend between the demographic make-up of neighborhoods and the rate of corporate ownership I plotted various US Census demographic group populations against corporate ownership rates. From this perspective, there does not appear to be any clear trend between demographic makeup of a neighborhood and the rate of corporate ownership. 
+		</div>
+		</div>
+
+		<div class="content-margin-container">
+			<div class="margin-left-block">
+			</div>
+		<div class="main-content-block">
+		<h1>Average Corporate Ownership Rate (2004-2024) vs. Non-White Population Percent</h1>
+		<img src="./images/nonwhite pct vs corp.png" alt="">					
+		</div>
+		<div class="margin-right-block">
+			One interesting trend does emerge however if we transform the data slightly to aggregate all non-white population groups and divide that number by the total population to get a non-white percentage. 
+			When we do this a downward trend emerges between the non-white population percentage and the rate of corporate ownership. This would seem to indicate that neighborhoods with a higher percentage of non-white residents tend to have lower rates of corporate ownership. 
+		</div>
+		</div>
+
+		<div class="content-margin-container">
+			<div class="margin-left-block">
+			</div>
+		<div class="main-content-block">
+		<h1>Average Corporate Ownership Rate (2004-2024) vs. Non-White Population Percent</h1>
+		<img src="./images/Chil corp own rate.png" alt="">					
+		</div>
+		<div class="margin-right-block">
+		Beyond simply exploring racial demographics, I also explored the relationship between the rate of corporate ownership and the percentage of children in a neighborhood.
+	This transform was completed by dividing the total population of people under 18 by the total population of the neighborhood to get a rate of children in the neighborhood.
+	When this data is plotted against the rate of corporate ownership a clear downward trend emerges. The neighborhoods with the highest percentage of children tend to have the lowest rates of corporate ownership.
+		</div>
+		</div>
+
+		<div class="content-margin-container">
+			<div class="margin-left-block">
+			</div>
+		<div class="main-content-block">
+		<h1>Average Corporate Ownership Rate (2004-2024) vs. Non-White Population Percent</h1>
+		<img src="./images/Tot unit vs corp own.png" alt="">					
+		</div>
+		<div class="margin-right-block">
+			Surprisingly Corporate ownership does not appear to correlate positively with the total number of housing units. This is somewhat surprising to me as when I think of corporate owned real estate I tend to think of large apartment buildings or blocks of row homes. Unfortunately total units does not vary over time and thus a comparison of if corporate ownership tends to grow or shrink the overall housing pool is not feasible with this data. Furthermore one cannot explore if corporate ownership increases or decreases vacancy rates as that data across time is similarly unavailable. </div>
+		</div>		
+
+		<div class="content-margin-container">
+			<div class="margin-left-block">
+			</div>
+		<div class="main-content-block">
+		<h1>Average Corporate Ownership Rate (2004-2024) vs. Non-White Population Percent</h1>
+		<img src="./images/Size vs. Corp.png" alt="">					
+		</div>
+		<div class="margin-right-block">
+			In comparing the size of the neighborhood to the rate of corporate ownership it becomes clear that the neighborhood size cannot be taken as a proxy for the population density of the neighborhood. This fact could be at the root of why it appears that corporate ownership does not increase in higher housing unit regions. The heterogeneity of neighborhood size makes absolute numerical comparisons less informative. </div>
+		</div>	
+
+		<div class="content-margin-container" id="summary">
+				<div class="margin-left-block">
+				</div>
+		    <div class="main-content-block">
+						<h1>Summary</h1>
+						In this brief exploration we have seen that corporate ownership of housing in the Boston metro area is increasing across all neighborhoods. At the same time owner occupancy rates are dropping across most neighborhoods with a few exceptions. 
+						Furthermore, we did see some evidence that underrepresented groups and families tend to be less affected by the recent trend, though there are many limitations to the methods and transformations employed and further direct data collection would be needed to 
+						draw any conclusions. Finally, we saw that trying to analyze the relationship between number of housing units or population and the rate of corporate ownership is difficult as the neighborhoods within the dataset are very heterogeneous in terms of absolute size 
+						and population making direct comparisons difficult.
+		    </div>
+		    <div class="margin-right-block">
+		    </div>
+		</div>
+
+	</body>
+
+</html>
